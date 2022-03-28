@@ -1,40 +1,36 @@
 class LinkedList
+  attr_reader :head
+
   def initialize
     @head = ListNode.new
   end
 
   def add(node)
     temp = head
-    temp = temp.next until temp.next.nil?
+    temp = temp.next until !temp.next
     temp.next = node
   end
 
   def add_by_order(node)
-    temp = head
-    while true
-      case
-      when temp.next.nil?
-        temp.next = node
-        break
-      when temp.next.no > node.no
-        node.next = temp.next
-        temp.next = node
-        break
-      when temp.next.no == node.no
-        p "#{node.no} 已存在"
-        break
-      else
-        temp = temp.next
-      end
+    if preview_node = find_preview(node)
+      node.next = preview_node.next
+      preview_node.next = node
+    else
+      p "#{node.no} 已存在"
     end
+
   end
 
-  def list
+  def find_preview(node)
     temp = head
-    while
-      p "no: #{temp.no}, #{temp.name}, #{temp.nickname}, next: #{temp.next&.no}"
-      break if temp.next.nil?
-      temp = temp.next
+    return temp if !temp.next
+    return false if temp.next.no == node.no
+    return temp if temp.next.no > node.no
+
+    while temp = temp.next
+      return temp if !temp.next
+      return false if temp.next.no == node.no
+      return temp if temp.next.no > node.no
     end
   end
 
@@ -42,7 +38,7 @@ class LinkedList
     temp = head
     while true
       case
-      when temp.next.nil?
+      when !temp.next
         p '节点不存在'
         break
       when temp.no == node.no
@@ -59,7 +55,7 @@ class LinkedList
     temp = head
     while true
       case
-      when temp.next.nil?
+      when !temp.next
         p "节点不存在"
         break
       when temp.next.no == no
@@ -72,8 +68,13 @@ class LinkedList
     
   end
 
+  def list
+    temp = head
+    p "no: #{temp.no}, #{temp.name}, #{temp.nickname}, next: #{temp.next&.no}"
+    p "no: #{temp.no}, #{temp.name}, #{temp.nickname}, next: #{temp.next&.no}" while temp = temp.next
+  end
+
   private
-  attr_reader :head
   
 end
 
@@ -85,6 +86,10 @@ class ListNode
     @no = no
     @name = name
     @nickname = nickname
+  end
+
+  def to_s
+    "节点信息 #{@no}, #{@name}, #{@nickname}"
   end
 
 end
@@ -103,3 +108,12 @@ list.list
 p "--------2"
 list.destroy(9)
 list.list
+p "--------3"
+l = LinkedList.new
+l.add ListNode.new 5, 'a', 'aa'
+l.add ListNode.new 4, 'd', 'dd'
+l.add ListNode.new 4, 'd', 'dd'
+l.add ListNode.new 2, 'b', 'bb'
+l.add ListNode.new 9, 'c', 'cc'
+l.add ListNode.new 9, 'c', 'cc'
+l.list
