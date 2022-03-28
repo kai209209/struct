@@ -12,23 +12,20 @@ class LinkedList
   def add_by_order(node)
     temp = head
     while true
-      if temp.next.nil?
+      case
+      when temp.next.nil?
         temp.next = node
         break
-      end
-
-      if temp.next.no > node.no
+      when temp.next.no > node.no
         node.next = temp.next
         temp.next = node
         break
-      end
-
-      if temp.next.no == node.no
+      when temp.next.no == node.no
         p "#{node.no} 已存在"
         break
+      else
+        temp = temp.next
       end
-
-      temp = temp.next
     end
   end
 
@@ -44,34 +41,33 @@ class LinkedList
   def update(node)
     temp = head
     while true
-      if temp.next.nil?
+      case
+      when temp.next.nil?
         p '节点不存在'
         break
-      end
-
-      if temp.no == node.no
+      when temp.no == node.no
         temp.name = node.name
         temp.nickname = node.nickname
         break
+      else
+        temp = temp.next
       end
-
-      temp = temp.next
     end
   end
 
   def destroy(no)
     temp = head
     while true
-      if temp.next.nil?
+      case
+      when temp.next.nil?
         p "节点不存在"
         break
-      end
-
-      if temp.next.no == no
+      when temp.next.no == no
         temp.next = temp.next.next
         break
+      else
+        temp = temp.next
       end
-      temp = temp.next
     end
     
   end
@@ -105,5 +101,5 @@ p "--------1"
 list.update(ListNode.new(2, 'ba', 'bbaa'))
 list.list
 p "--------2"
-list.destroy(5)
+list.destroy(9)
 list.list
