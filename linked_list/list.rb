@@ -81,12 +81,19 @@ class LinkedList
     i
   end
 
+  def get_node(index)
+    return "Not exist" if index > get_effective_size
+
+    temp = head
+    index.times { temp = temp.next }
+    temp
+  end
+
   def get_countdown_node(index)
     step = get_effective_size - index
-    return '节点不存在' if step < 0
+    return 'Not exist' if step < 0
     temp = head.next
     step.times { temp = temp.next }
-    p temp.to_s
     temp    
   end
 
@@ -127,41 +134,3 @@ class ListNode
   end
 
 end
-
-p "按顺序添加"
-l = LinkedList.new
-l.add ListNode.new 5, 'a', 'aa'
-l.add ListNode.new 4, 'd', 'dd'
-l.add ListNode.new 4, 'd', 'dd'
-l.add ListNode.new 2, 'b', 'bb'
-l.add ListNode.new 9, 'c', 'cc'
-l.add ListNode.new 9, 'c', 'cc'
-l.list
-
-p "按排序添加"
-list = LinkedList.new
-list.add_by_order ListNode.new 1, 'a', 'aa'
-list.add_by_order ListNode.new 3, 'd', 'dd'
-list.add_by_order ListNode.new 2, 'd', 'dd'
-list.add_by_order ListNode.new 6, 'b', 'bb'
-list.add_by_order ListNode.new 5, 'c', 'cc'
-list.add_by_order ListNode.new 4, 'c', 'cc'
-list.list
-
-p "更新节点"
-list.update(ListNode.new(2, 'ba', 'bbaa'))
-list.list
-
-p "删除节点"
-list.destroy(6)
-list.list
-
-p "获取链表长度"
-p list.get_effective_size
-
-p "获取链表倒数的有效节点"
-p list.get_countdown_node(3)
-
-p "反序链表"
-list.revert_list
-list.list
